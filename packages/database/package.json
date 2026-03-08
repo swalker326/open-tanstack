@@ -12,10 +12,12 @@
     "build": "rslib build",
     "check": "biome check --write",
     "dev": "rslib build --watch",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.6",
+    "@cloudflare/workers-types": "^4.20260307.1",
     "@rslib/core": "^0.19.6",
     "@types/node": "^24.10.13",
     "drizzle-kit": "^0.31.0",
@@ -25,8 +27,8 @@
   "dependencies": {
     "@libsql/client": "^0.15.4",
     "dotenv": "^16.5.0",
-    "drizzle-zod": "^0.8.1",
     "drizzle-orm": "^0.43.1",
+    "drizzle-zod": "^0.8.1",
     "nanoid": "^5.1.5",
     "zod": "^4.1.11"
   }
