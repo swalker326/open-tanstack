@@ -10,8 +10,8 @@
   },
   "scripts": {
     "build": "rspack build",
-    "check": "biome check --write",
-    "check:ci": "biome check",
+    "check": "biome check",
+    "check:write": "biome check --write",
     "dev": "rspack dev",
     "format": "biome format --write",
     "preview": "rspack preview",

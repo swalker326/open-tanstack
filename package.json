@@ -7,7 +7,7 @@
     "dev": "turbo run dev --ui=tui --parallel --filter=@repo/auth --filter=@repo/api --filter=web",
     "type-check": "turbo run type-check",
     "check": "turbo run check",
-    "check:ci": "turbo run check:ci",
+    "check:write": "turbo run check:write",
     "db:generate": "pnpm --filter @repo/database exec drizzle-kit generate",
     "db:migrate:local": "pnpm --filter @repo/api exec wrangler d1 migrations apply starter_app_db --local --persist-to ../../.wrangler/state"
   },

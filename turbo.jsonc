@@ -7,8 +7,8 @@
     "check": {
       "dependsOn": ["^check"]
     },
-    "check:ci": {
-      "dependsOn": ["^check:ci"]
+    "check:write": {
+      "dependsOn": ["^check:write"]
     },
     "type-check": {
       "dependsOn": ["^type-check"]
