@@ -41,6 +41,11 @@ cp apps/auth/.dev.vars.example apps/auth/.dev.vars
 
 3. Fill in your real values in `.env` and `apps/auth/.dev.vars`.
 
+For web runtime routing, set:
+
+- `API_URL` (local default: `http://localhost:8787`)
+- `ISSUER_URL` (local default: `http://localhost:8788`)
+
 ## Run locally
 
 Start all app processes with Turbo TUI:
@@ -67,6 +72,44 @@ Inspector/debug ports are pinned to avoid collisions:
 - `pnpm run check`: run Biome checks across workspace packages.
 - `pnpm run db:generate`: generate Drizzle migrations.
 - `pnpm run db:migrate:local`: apply D1 migrations to local Wrangler state.
+
+## Deployment
+
+CI/CD on `main` is split into reusable workflows under `.github/workflows`.
+
+- PRs run validation (`check` + `type-check`) via `pr-validation.yml`.
+- Pushes to `main` run `main-deploy.yml`, which composes dedicated workflows for:
+  - validation
+  - affected range calculation for Turbo
+  - migration change detection
+  - affected build/deploy tasks
+
+### Web deployment
+
+- The web app uses Zephyr, so a successful web build is the deploy signal.
+- CI runs an affected web build only: `pnpm turbo run build --affected --filter=web`.
+- If `apps/web` is not affected, Turbo skips the build task.
+- In `main` CI, build-time web env values are set to:
+  - `API_URL=https://starter-api.shane9741.workers.dev`
+  - `ISSUER_URL=https://starter-auth.shane9741.workers.dev`
+
+### Auth and API deployment
+
+- Auth and API are Cloudflare Workers and deploy with Wrangler `deploy` scripts.
+- CI deploys only when affected:
+  - `pnpm turbo run deploy --affected --filter=@repo/auth`
+  - `pnpm turbo run deploy --affected --filter=@repo/api`
+- Required GitHub Actions secrets:
+  - `CLOUDFLARE_API_TOKEN`
+  - `CLOUDFLARE_ACCOUNT_ID`
+
+### Database migrations (Drizzle + D1)
+
+- Create migrations from schema changes with `pnpm run db:generate`.
+- Commit the generated files in `packages/database/drizzle/migrations`.
+- On `main`, CI detects migration changes in that folder and only then runs:
+  - `wrangler d1 migrations apply starter_app_db --remote`
+- Migration apply happens before worker deploy jobs.
 
 ## Notes
 

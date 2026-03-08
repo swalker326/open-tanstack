@@ -1,15 +1,20 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "starter-api",
-  "main": "src/index.ts",
-  "compatibility_date": "2026-03-07",
-  "services": [{ "binding": "AUTH", "service": "starter-auth" }],
-  "d1_databases": [
-    {
-      "binding": "APP_DB",
-      "database_name": "starter_app_db",
-      "database_id": "local-app-db",
-      "migrations_dir": "../../packages/database/drizzle/migrations"
-    }
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "starter-api",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-03-07",
+	"services": [
+		{
+			"binding": "AUTH",
+			"service": "starter-auth",
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "APP_DB",
+			"database_name": "starter_app_db",
+			"migrations_dir": "../../packages/database/drizzle/migrations",
+			"database_id": "482f345e-cdf8-4ec7-95a1-3561bebb93fd"
+		}
+	]
 }

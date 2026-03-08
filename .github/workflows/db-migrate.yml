@@ -1,0 +1,37 @@
+name: DB Migrate
+
+on:
+  workflow_call:
+    inputs:
+      database_name:
+        description: D1 database name for migrations.
+        required: false
+        default: starter_app_db
+        type: string
+
+jobs:
+  migrate:
+    name: Apply D1 Migrations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Apply pending D1 migrations
+        run: pnpm --filter @repo/api exec wrangler d1 migrations apply "${{ inputs.database_name }}" --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

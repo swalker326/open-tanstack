@@ -1,0 +1,67 @@
+name: Main Deploy
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: main-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    uses: ./.github/workflows/validate.yml
+
+  set-affected-range:
+    needs: validate
+    uses: ./.github/workflows/affected-range.yml
+
+  detect-db-migrations:
+    needs: set-affected-range
+    uses: ./.github/workflows/detect-migrations.yml
+    with:
+      turbo_base: ${{ needs.set-affected-range.outputs.turbo_base }}
+      turbo_head: ${{ needs.set-affected-range.outputs.turbo_head }}
+
+  build-web:
+    needs: set-affected-range
+    uses: ./.github/workflows/turbo-affected-task.yml
+    secrets: inherit
+    with:
+      job_name: Build Web App (affected)
+      task: build
+      filter: web
+      api_url: https://starter-api.shane9741.workers.dev
+      issuer_url: https://starter-auth.shane9741.workers.dev
+      turbo_base: ${{ needs.set-affected-range.outputs.turbo_base }}
+      turbo_head: ${{ needs.set-affected-range.outputs.turbo_head }}
+
+  apply-db-migrations:
+    needs: [set-affected-range, detect-db-migrations]
+    if: needs.detect-db-migrations.outputs.has_migrations == 'true'
+    uses: ./.github/workflows/db-migrate.yml
+    secrets: inherit
+
+  deploy-auth:
+    needs: [set-affected-range, apply-db-migrations]
+    if: always() && (needs.apply-db-migrations.result == 'success' || needs.apply-db-migrations.result == 'skipped')
+    uses: ./.github/workflows/turbo-affected-task.yml
+    secrets: inherit
+    with:
+      job_name: Deploy Auth Worker (affected)
+      task: deploy
+      filter: '@repo/auth'
+      turbo_base: ${{ needs.set-affected-range.outputs.turbo_base }}
+      turbo_head: ${{ needs.set-affected-range.outputs.turbo_head }}
+
+  deploy-api:
+    needs: [set-affected-range, apply-db-migrations]
+    if: always() && (needs.apply-db-migrations.result == 'success' || needs.apply-db-migrations.result == 'skipped')
+    uses: ./.github/workflows/turbo-affected-task.yml
+    secrets: inherit
+    with:
+      job_name: Deploy API Worker (affected)
+      task: deploy
+      filter: '@repo/api'
+      turbo_base: ${{ needs.set-affected-range.outputs.turbo_base }}
+      turbo_head: ${{ needs.set-affected-range.outputs.turbo_head }}
