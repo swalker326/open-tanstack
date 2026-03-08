@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+body,
+html {
+  @apply h-screen w-screen;
+}

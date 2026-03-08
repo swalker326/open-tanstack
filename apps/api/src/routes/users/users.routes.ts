@@ -1,90 +1,131 @@
-import { createRoute, z } from '@hono/zod-openapi';
-import { userInsertSchema, userSelectSchema } from '@repo/database';
+import { createRoute, z } from "@hono/zod-openapi";
+import { userInsertSchema, userSelectSchema } from "@repo/database";
+import * as httpStatusCodes from "stoker/http-status-codes";
 
 const usersResponseSchema = z.object({
-  data: z.array(userSelectSchema),
+  data: z.array(userSelectSchema)
 });
 
 const userResponseSchema = z.object({
-  data: userSelectSchema,
+  data: userSelectSchema
 });
 
 const errorResponseSchema = z.object({
-  error: z.string(),
+  error: z.string()
 });
 
 const createUserBodySchema = userInsertSchema.pick({
   email: true,
-  avatarUrl: true,
+  avatarUrl: true
 });
 
 export const listUsersRoute = createRoute({
-  method: 'get',
-  path: '/users',
-  tags: ['Users'],
+  method: "get",
+  path: "/users",
+  tags: ["Users"],
   responses: {
-    200: {
-      description: 'List users',
+    [httpStatusCodes.OK]: {
+      description: "List users",
       content: {
-        'application/json': {
-          schema: usersResponseSchema,
-        },
-      },
+        "application/json": {
+          schema: usersResponseSchema
+        }
+      }
+    }
+  }
+});
+
+export const getUserMeRoute = createRoute({
+  method: "get",
+  path: "/users/me",
+  tags: ["Users"],
+  responses: {
+    [httpStatusCodes.NOT_FOUND]: {
+      description: "User not found",
+      content: {
+        "application/json": {
+          schema: errorResponseSchema
+        }
+      }
     },
-  },
+    [httpStatusCodes.UNAUTHORIZED]: {
+      description: "Unauthorized",
+      content: {
+        "application/json": {
+          schema: errorResponseSchema
+        }
+      }
+    },
+    [httpStatusCodes.OK]: {
+      description: "Get current user",
+      content: {
+        "application/json": {
+          schema: userResponseSchema
+        }
+      }
+    }
+  }
 });
 
 export const getUserByIdRoute = createRoute({
-  method: 'get',
-  path: '/users/{id}',
-  tags: ['Users'],
+  method: "get",
+  path: "/users/{id}",
+  tags: ["Users"],
   request: {
     params: z.object({
-      id: z.string(),
-    }),
+      id: z.string()
+    })
   },
   responses: {
-    404: {
-      description: 'User not found',
+    [httpStatusCodes.NOT_FOUND]: {
+      description: "User not found",
       content: {
-        'application/json': {
-          schema: errorResponseSchema,
-        },
-      },
+        "application/json": {
+          schema: errorResponseSchema
+        }
+      }
     },
-    200: {
-      description: 'Get user by id',
+    [httpStatusCodes.UNAUTHORIZED]: {
+      description: "Unauthorized",
       content: {
-        'application/json': {
-          schema: userResponseSchema,
-        },
-      },
+        "application/json": {
+          schema: errorResponseSchema
+        }
+      }
     },
-  },
+    [httpStatusCodes.OK]: {
+      description: "Get user by id",
+      content: {
+        "application/json": {
+          schema: userResponseSchema
+        }
+      }
+    }
+  }
 });
 
 export const createUserRoute = createRoute({
-  method: 'post',
-  path: '/users',
-  tags: ['Users'],
+  method: "post",
+  path: "/users",
+  tags: ["Users"],
   request: {
     body: {
       content: {
-        'application/json': {
-          schema: createUserBodySchema,
-        },
+        "application/json": {
+          schema: createUserBodySchema
+        }
       },
-      required: true,
-    },
+      required: true
+    }
   },
   responses: {
-    201: {
-      description: 'Create user',
+    [httpStatusCodes.CREATED]: {
+      description: "Create user",
       content: {
-        'application/json': {
-          schema: userResponseSchema,
-        },
-      },
-    },
-  },
+        "application/json": {
+          schema: userResponseSchema
+        }
+      }
+    }
+  }
 });

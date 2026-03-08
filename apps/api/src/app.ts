@@ -19,6 +19,6 @@ app.use(
 app.use('/api/*', openauthMiddleware);
 
 app.route('/', indexRouter);
-app.route('/api/', usersRouter);
+app.route('/api', usersRouter);
 
 export { app };
