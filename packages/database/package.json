@@ -1,0 +1,33 @@
+{
+  "name": "@repo/database",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "rslib build",
+    "check": "biome check --write",
+    "dev": "rslib build --watch",
+    "format": "biome format --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.14",
+    "@rslib/core": "^0.19.6",
+    "@types/node": "^24.10.13",
+    "drizzle-kit": "^0.31.0",
+    "typescript": "^5.8.3"
+  },
+  "private": true,
+  "dependencies": {
+    "@libsql/client": "^0.15.4",
+    "dotenv": "^16.5.0",
+    "drizzle-zod": "^0.8.1",
+    "drizzle-orm": "^0.43.1",
+    "nanoid": "^5.1.5",
+    "zod": "^4.1.11"
+  }
+}

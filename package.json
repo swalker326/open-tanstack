@@ -1,0 +1,17 @@
+{
+  "name": "rsbuild-tanstack-openauth-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "check": "turbo run check"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "2.4.6",
+    "turbo": "^2.8.14"
+  },
+  "packageManager": "pnpm@10.26.1"
+}
