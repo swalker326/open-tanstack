@@ -1,8 +1,8 @@
-import { type Client, createClient } from "@openauthjs/openauth/client";
-import { create } from "zustand";
+import { type Client, createClient } from '@openauthjs/openauth/client';
+import { create } from 'zustand';
 
-const API_BASE_URL = import.meta.env.API_URL || "http://localhost:8787";
-const ISSUER_URL = import.meta.env.ISSUER_URL || "http://localhost:8788";
+const API_BASE_URL = import.meta.env.API_URL || 'http://localhost:8787';
+const ISSUER_URL = import.meta.env.ISSUER_URL || 'http://localhost:8788';
 
 interface UserObject {
   id: string;
@@ -36,8 +36,8 @@ export const useAuth = create<AuthStore>((set, get) => ({
   user: undefined,
   initialize: async () => {
     const client = createClient({
-      clientID: "starter-api",
-      issuer: ISSUER_URL
+      clientID: 'starter-api',
+      issuer: ISSUER_URL,
     });
     if (get().isLoaded) {
       return;
@@ -48,8 +48,8 @@ export const useAuth = create<AuthStore>((set, get) => ({
   },
   login: async () => {
     const client = createClient({
-      clientID: "starter-api",
-      issuer: ISSUER_URL
+      clientID: 'starter-api',
+      issuer: ISSUER_URL,
     });
     await login(client);
   },
@@ -58,14 +58,14 @@ export const useAuth = create<AuthStore>((set, get) => ({
       accessToken: undefined,
       isLoggedIn: false,
       user: undefined,
-      isLoaded: true
+      isLoaded: true,
     });
     await logout();
   },
   refreshAccessToken: async () => {
     const client = createClient({
-      clientID: "starter-api",
-      issuer: ISSUER_URL
+      clientID: 'starter-api',
+      issuer: ISSUER_URL,
     });
     const token = await refreshAccessToken(client, get().accessToken);
     if (token) {
@@ -79,28 +79,28 @@ export const useAuth = create<AuthStore>((set, get) => ({
       token = await get().refreshAccessToken();
     }
     return token;
-  }
+  },
 }));
 
 async function refreshAccessToken(client: Client, token: string | undefined) {
-  const refresh = localStorage.getItem("refresh");
+  const refresh = localStorage.getItem('refresh');
   if (!refresh) return;
   const next = await client.refresh(refresh, {
-    access: token
+    access: token,
   });
   if (next.err) return;
   if (!next.tokens) return token;
 
-  localStorage.setItem("refresh", next.tokens.refresh);
+  localStorage.setItem('refresh', next.tokens.refresh);
   return next.tokens.access;
 }
 
 async function callback(client: Client, code: string, state: string) {
-  const sessionChallenge = sessionStorage.getItem("challenge");
+  const sessionChallenge = sessionStorage.getItem('challenge');
   if (!sessionChallenge) {
     return {
-      url: "/",
-      token: null
+      url: '/',
+      token: null,
     };
   }
   const challenge = JSON.parse(sessionChallenge);
@@ -109,38 +109,38 @@ async function callback(client: Client, code: string, state: string) {
       const exchanged = await client.exchange(
         code,
         location.origin,
-        challenge.verifier
+        challenge.verifier,
       );
       if (!exchanged.err) {
-        localStorage.setItem("refresh", exchanged.tokens.refresh);
+        localStorage.setItem('refresh', exchanged.tokens.refresh);
         return {
-          url: "/app",
-          token: exchanged.tokens.access
+          url: '/app',
+          token: exchanged.tokens.access,
         };
       }
     }
     return {
-      url: "/",
-      token: null
+      url: '/',
+      token: null,
     };
   }
-  throw new Error("No code provided");
+  throw new Error('No code provided');
 }
 
 async function fetchUser(token: string) {
   const res = await fetch(`${API_BASE_URL}/api/users/me`, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
-  console.log("fetchUser res", res);
+  console.log('fetchUser res', res);
 
   if (!res.ok) {
     return;
   }
 
   const payload = (await res.json()) as { data?: UserObject } | UserObject;
-  if ("data" in payload && payload.data) {
+  if ('data' in payload && payload.data) {
     return payload.data;
   }
 
@@ -149,11 +149,11 @@ async function fetchUser(token: string) {
 
 async function resolveAuthState(
   client: Client,
-  currentAccessToken: string | undefined
+  currentAccessToken: string | undefined,
 ): Promise<ResolvedAuthState> {
   const search = new URLSearchParams(window.location.search);
-  const code = search.get("code");
-  const state = search.get("state");
+  const code = search.get('code');
+  const state = search.get('state');
 
   if (code && state) {
     const exchanged = await callback(client, code, state);
@@ -166,7 +166,7 @@ async function resolveAuthState(
     return {
       accessToken: exchanged.token,
       isLoggedIn: Boolean(user),
-      user
+      user,
     };
   }
 
@@ -179,19 +179,19 @@ async function resolveAuthState(
   return {
     accessToken: token,
     isLoggedIn: Boolean(user),
-    user
+    user,
   };
 }
 
 async function logout() {
-  localStorage.removeItem("refresh");
-  window.location.replace("/");
+  localStorage.removeItem('refresh');
+  window.location.replace('/');
 }
 
 async function login(client: Client) {
-  const { challenge, url } = await client.authorize(location.origin, "code", {
-    pkce: true
+  const { challenge, url } = await client.authorize(location.origin, 'code', {
+    pkce: true,
   });
-  sessionStorage.setItem("challenge", JSON.stringify(challenge));
+  sessionStorage.setItem('challenge', JSON.stringify(challenge));
   location.href = url;
 }

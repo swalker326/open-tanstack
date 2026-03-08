@@ -11,6 +11,7 @@
   "scripts": {
     "build": "rspack build",
     "check": "biome check --write",
+    "check:ci": "biome check",
     "dev": "rspack dev",
     "format": "biome format --write",
     "preview": "rspack preview",

@@ -70,6 +70,7 @@ Inspector/debug ports are pinned to avoid collisions:
 - `pnpm run dev`: run web + api + auth in parallel with Turbo TUI.
 - `pnpm run type-check`: run type checks across workspace packages.
 - `pnpm run check`: run Biome checks across workspace packages.
+- `pnpm run check:ci`: run Biome checks without writing fixes (CI-safe).
 - `pnpm run db:generate`: generate Drizzle migrations.
 - `pnpm run db:migrate:local`: apply D1 migrations to local Wrangler state.
 
