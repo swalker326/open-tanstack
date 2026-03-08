@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "starter-api-test",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-03-07",
+  "d1_databases": [
+    {
+      "binding": "APP_DB",
+      "database_name": "starter_app_db_test",
+      "database_id": "local-test-db"
+    }
+  ]
+}

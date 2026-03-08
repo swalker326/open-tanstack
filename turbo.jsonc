@@ -7,8 +7,8 @@
     "check": {
       "dependsOn": ["^check"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+    "type-check": {
+      "dependsOn": ["^type-check"]
     },
     "dev": {
       "persistent": true,

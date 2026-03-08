@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "type-check": "turbo run type-check",
     "check": "turbo run check"
   },
   "keywords": [],
