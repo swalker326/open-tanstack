@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "rsbuild build",
-    "check": "biome check --write",
+    "check": "biome check",
+    "check:write": "biome check --write",
     "dev": "rsbuild dev --open",
     "format": "biome format --write",
     "preview": "rsbuild preview",
@@ -19,6 +20,7 @@
     "@tanstack/react-router-devtools": "^1.166.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "zephyr-rsbuild-plugin": "^0.1.14",
     "zustand": "^5.0.11"
   },
   "devDependencies": {

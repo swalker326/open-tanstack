@@ -1,0 +1,37 @@
+name: Affected Range
+
+on:
+  workflow_call:
+    outputs:
+      turbo_base:
+        description: Base SHA used by Turbo affected.
+        value: ${{ jobs.compute.outputs.turbo_base }}
+      turbo_head:
+        description: Head SHA used by Turbo affected.
+        value: ${{ jobs.compute.outputs.turbo_head }}
+
+jobs:
+  compute:
+    name: Compute Turbo SHA Range
+    runs-on: ubuntu-latest
+    outputs:
+      turbo_base: ${{ steps.range.outputs.turbo_base }}
+      turbo_head: ${{ steps.range.outputs.turbo_head }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute Turbo range
+        id: range
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.before }}"
+          if [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
+            BASE_SHA="$(git rev-list --max-parents=0 HEAD)"
+          fi
+
+          echo "turbo_base=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "turbo_head=${{ github.sha }}" >> "$GITHUB_OUTPUT"

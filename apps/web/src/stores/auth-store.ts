@@ -1,8 +1,8 @@
 import { type Client, createClient } from '@openauthjs/openauth/client';
 import { create } from 'zustand';
 
-const API_BASE_URL = 'http://localhost:8787';
-const ISSUER_URL = 'http://localhost:8788';
+const API_BASE_URL = import.meta.env.API_URL || 'http://localhost:8787';
+const ISSUER_URL = import.meta.env.ISSUER_URL || 'http://localhost:8788';
 
 interface UserObject {
   id: string;
@@ -133,7 +133,7 @@ async function fetchUser(token: string) {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log("fetchUser res", res);
+  console.log('fetchUser res', res);
 
   if (!res.ok) {
     return;

@@ -55,16 +55,12 @@
       "indexes": {
         "users_email_uq": {
           "name": "users_email_uq",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         },
         "users_deleted_at_idx": {
           "name": "users_deleted_at_idx",
-          "columns": [
-            "deleted_at"
-          ],
+          "columns": ["deleted_at"],
           "isUnique": false
         }
       },
