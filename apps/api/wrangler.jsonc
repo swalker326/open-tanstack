@@ -3,6 +3,9 @@
   "name": "starter-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-03-07",
+  "vars": {
+    "ISSUER_URL": ""
+  },
   "services": [
     {
       "binding": "AUTH",
