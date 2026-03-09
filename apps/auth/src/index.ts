@@ -5,6 +5,8 @@ import { createDb, schema } from '@repo/database';
 import { subjects } from '@repo/subjects';
 import { z } from 'zod';
 
+console.log('[ci] auth affected trigger');
+
 const GithubUserSchema = z
   .object({
     id: z.number().int(),
