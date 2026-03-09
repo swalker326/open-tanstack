@@ -44,7 +44,7 @@ jobs:
       TURBO_SCM_HEAD: ${{ inputs.turbo_head }}
       API_URL: ${{ inputs.api_url }}
       ISSUER_URL: ${{ inputs.issuer_url }}
-      ZE_SECRET_TOKEN: ${{ secrets.ZE_SECRET_KEY || secrets.ZEPHYR_AUTH_TOKEN }}
+      ZE_SECRET_TOKEN: ${{ secrets.ZE_SECRET_TOKEN || secrets.ZE_SECRET_KEY || secrets.ZEPHYR_AUTH_TOKEN }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
