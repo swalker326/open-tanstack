@@ -4,6 +4,9 @@
     "build": {
       "outputs": ["dist/**"]
     },
+    "deploy": {
+      "cache": false
+    },
     "check": {
       "dependsOn": ["^check"]
     },
