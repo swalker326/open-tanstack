@@ -6,6 +6,12 @@
   "vars": {
     "ISSUER_URL": ""
   },
+  "observability": {
+    "logs": {
+      "enabled": false,
+      "invocation_logs": true
+    }
+  },
   "services": [
     {
       "binding": "AUTH",
