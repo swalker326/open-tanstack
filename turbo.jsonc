@@ -1,5 +1,12 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
+  "globalPassThroughEnv": [
+    "CLOUDFLARE_API_TOKEN",
+    "CLOUDFLARE_ACCOUNT_ID",
+    "ZE_SECRET_TOKEN",
+    "API_URL",
+    "ISSUER_URL"
+  ],
   "tasks": {
     "build": {
       "outputs": ["dist/**"]
