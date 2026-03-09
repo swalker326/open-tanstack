@@ -1,0 +1,96 @@
+diff --git a/dist/esm/keys.js b/dist/esm/keys.js
+index ae78568953e36dfee196ce268fb1d1324f312d6d..8ad9de06826e3992a53ea511d049e3008eb23069 100644
+--- a/dist/esm/keys.js
++++ b/dist/esm/keys.js
+@@ -68,7 +68,21 @@ async function signingKeys(storage) {
+     alg: signingAlg
+   };
+   await Storage.set(storage, ["signing:key", serialized.id], serialized);
+-  return signingKeys(storage);
++  const jwk = await exportJWK(key.publicKey);
++  jwk.kid = serialized.id;
++  jwk.use = "sig";
++  return [
++    ...results,
++    {
++      id: serialized.id,
++      alg: signingAlg,
++      created: new Date(serialized.created),
++      expired: void 0,
++      public: key.publicKey,
++      private: key.privateKey,
++      jwk
++    }
++  ];
+ }
+ async function encryptionKeys(storage) {
+   const results = [];
+@@ -104,7 +118,20 @@ async function encryptionKeys(storage) {
+     alg: encryptionAlg
+   };
+   await Storage.set(storage, ["encryption:key", serialized.id], serialized);
+-  return encryptionKeys(storage);
++  const jwk = await exportJWK(key.publicKey);
++  jwk.kid = serialized.id;
++  return [
++    ...results,
++    {
++      id: serialized.id,
++      alg: encryptionAlg,
++      created: new Date(serialized.created),
++      expired: void 0,
++      public: key.publicKey,
++      private: key.privateKey,
++      jwk
++    }
++  ];
+ }
+ export {
+   signingKeys,
+diff --git a/src/keys.ts b/src/keys.ts
+index 81688d15a56e54b130f1b8c31493beafb8571ea8..236985108dc02f0895c41a633edab687d4524cb5 100644
+--- a/src/keys.ts
++++ b/src/keys.ts
+@@ -96,7 +96,21 @@ export async function signingKeys(storage: StorageAdapter): Promise<KeyPair[]> {
+     alg: signingAlg,
+   }
+   await Storage.set(storage, ["signing:key", serialized.id], serialized)
+-  return signingKeys(storage)
++  const jwk = await exportJWK(key.publicKey)
++  jwk.kid = serialized.id
++  jwk.use = "sig"
++  return [
++    ...results,
++    {
++      id: serialized.id,
++      alg: signingAlg,
++      created: new Date(serialized.created),
++      expired: undefined,
++      public: key.publicKey,
++      private: key.privateKey,
++      jwk,
++    },
++  ]
+ }
+ 
+ export async function encryptionKeys(
+@@ -135,5 +149,18 @@ export async function encryptionKeys(
+     alg: encryptionAlg,
+   }
+   await Storage.set(storage, ["encryption:key", serialized.id], serialized)
+-  return encryptionKeys(storage)
++  const jwk = await exportJWK(key.publicKey)
++  jwk.kid = serialized.id
++  return [
++    ...results,
++    {
++      id: serialized.id,
++      alg: encryptionAlg,
++      created: new Date(serialized.created),
++      expired: undefined,
++      public: key.publicKey,
++      private: key.privateKey,
++      jwk,
++    },
++  ]
+ }

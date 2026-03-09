@@ -18,5 +18,10 @@
     "@biomejs/biome": "2.4.6",
     "turbo": "^2.8.14"
   },
-  "packageManager": "pnpm@10.26.1"
+  "packageManager": "pnpm@10.26.1",
+  "pnpm": {
+    "patchedDependencies": {
+      "@openauthjs/openauth@0.4.3": "patches/@openauthjs__openauth@0.4.3.patch"
+    }
+  }
 }

@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@openauthjs/openauth@0.4.3':
+    hash: 99b4379816f8ea58b929809abd46907a32974fe19dc142a8c3655629d17e1e20
+    path: patches/@openauthjs__openauth@0.4.3.patch
+
 importers:
 
   .:
@@ -22,7 +27,7 @@ importers:
         version: 1.2.2(hono@4.12.5)(zod@4.3.6)
       '@openauthjs/openauth':
         specifier: ^0.4.3
-        version: 0.4.3(arctic@2.3.4)(hono@4.12.5)
+        version: 0.4.3(patch_hash=99b4379816f8ea58b929809abd46907a32974fe19dc142a8c3655629d17e1e20)(arctic@2.3.4)(hono@4.12.5)
       '@repo/database':
         specifier: workspace:*
         version: link:../../packages/database
@@ -65,7 +70,7 @@ importers:
     dependencies:
       '@openauthjs/openauth':
         specifier: ^0.4.3
-        version: 0.4.3(arctic@2.3.4)(hono@4.12.5)
+        version: 0.4.3(patch_hash=99b4379816f8ea58b929809abd46907a32974fe19dc142a8c3655629d17e1e20)(arctic@2.3.4)(hono@4.12.5)
       zod:
         specifier: ^4.1.11
         version: 4.3.6
@@ -96,7 +101,7 @@ importers:
     dependencies:
       '@openauthjs/openauth':
         specifier: ^0.4.3
-        version: 0.4.3(arctic@2.3.4)(hono@4.12.5)
+        version: 0.4.3(patch_hash=99b4379816f8ea58b929809abd46907a32974fe19dc142a8c3655629d17e1e20)(arctic@2.3.4)(hono@4.12.5)
       '@tanstack/react-router':
         specifier: ^1.166.2
         version: 1.166.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -203,7 +208,7 @@ importers:
     dependencies:
       '@openauthjs/openauth':
         specifier: ^0.4.3
-        version: 0.4.3(arctic@2.3.4)(hono@4.12.5)
+        version: 0.4.3(patch_hash=99b4379816f8ea58b929809abd46907a32974fe19dc142a8c3655629d17e1e20)(arctic@2.3.4)(hono@4.12.5)
       valibot:
         specifier: ^1.0.0
         version: 1.2.0(typescript@5.9.3)
@@ -5567,7 +5572,7 @@ snapshots:
 
   '@neon-rs/load@0.0.4': {}
 
-  '@openauthjs/openauth@0.4.3(arctic@2.3.4)(hono@4.12.5)':
+  '@openauthjs/openauth@0.4.3(patch_hash=99b4379816f8ea58b929809abd46907a32974fe19dc142a8c3655629d17e1e20)(arctic@2.3.4)(hono@4.12.5)':
     dependencies:
       '@standard-schema/spec': 1.0.0-beta.3
       arctic: 2.3.4
