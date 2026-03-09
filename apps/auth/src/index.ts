@@ -5,6 +5,8 @@ import { createDb, schema } from '@repo/database';
 import { subjects } from '@repo/subjects';
 import { z } from 'zod';
 
+console.log('[ci] auth deploy trigger marker');
+
 const GithubUserSchema = z
   .object({
     id: z.number().int(),
