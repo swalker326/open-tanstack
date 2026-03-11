@@ -20,10 +20,8 @@ export const listUsersHandler: AppRouteHandler<typeof listUsersRoute> = async (
 export const getUserMeHandler: AppRouteHandler<typeof getUserMeRoute> = async (
   c,
 ) => {
-  console.log('getUserMeHandler called');
   const db = createDb(c.env.APP_DB);
   const userFromToken = c.get('user');
-  console.log('userFromToken', userFromToken);
   if (!userFromToken) {
     return c.json({ error: 'Unauthorized' }, httpStatusCodes.UNAUTHORIZED);
   }

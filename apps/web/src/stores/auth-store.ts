@@ -133,7 +133,6 @@ async function fetchUser(token: string) {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log('fetchUser res', res);
 
   if (!res.ok) {
     return;

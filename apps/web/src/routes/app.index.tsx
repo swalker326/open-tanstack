@@ -7,7 +7,6 @@ export const Route = createFileRoute('/app/')({
 
 function RouteComponent() {
   const { user } = useAuth();
-  console.log('User in RouteComponent:', user);
   const initials = user?.email.split('@')[0].slice(0, 2).toUpperCase() || '??';
 
   return (
